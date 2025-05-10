@@ -161,7 +161,7 @@ public class TradeToJsonWithGson {
         System.out.println("Starting to read aggregated trades from MongoDB..." + startTime);
         MongoCollection<Document> trades = database.getCollection("trades");
 
-        // Define the aggregation pipeline
+        //// Define the aggregation pipeline
         AggregateIterable<Document> result = trades.aggregate(Arrays.asList(
 
                 new Document("$match", new Document("tradeDate", "2023-11-29")),
