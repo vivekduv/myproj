@@ -11,15 +11,11 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.bson.Document;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.jetbrains.annotations.NotNull;
 
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
@@ -120,7 +116,7 @@ public class TradeToJsonWithGson {
                 new com.mongodb.ConnectionString(mongoUri)).build();
         String kafkaBootstrapServers = "localhost:9092";
         String kafkaTopic = "trades_topic";
-     //   KafkaProducer<String, String> kafkaProducer = createKafkaProducer(kafkaBootstrapServers);
+        KafkaProducer<String, String> kafkaProducer = createKafkaProducer(kafkaBootstrapServers);
         String kafkaGroupId = "trade-consumer-group";
 
         try {
@@ -134,15 +130,15 @@ public class TradeToJsonWithGson {
             // Total trades to generate and insert
             final int totalTrades = 10_000_000;
             final int batchSize = 10_000;
-          //  KafkaConsumer<String, String> kafkaConsumer = createKafkaConsumer(kafkaBootstrapServers, kafkaGroupId);
+           KafkaConsumer<String, String> kafkaConsumer = createKafkaConsumer(kafkaBootstrapServers, kafkaGroupId);
 
 
             Random random = new Random();
-         //   writeToMongoFromKafka(database, collectionName, kafkaConsumer, kafkaTopic, batchSize, mongoClient);
-        //   writeToKafkaInBatches(totalTrades, batchSize, random, kafkaTopic, kafkaProducer);
-     //      writeToMongoInBatches(totalTrades, batchSize, random, collection);
-        //    MongoCollection<Document> collectionRead = database.getCollection("trades");
-        //   readFromMongoWithFilter(collectionRead);
+            writeToMongoFromKafka(database, collectionName, kafkaConsumer, kafkaTopic, batchSize, mongoClient);
+           writeToKafkaInBatches(totalTrades, batchSize, random, kafkaTopic, kafkaProducer);
+          writeToMongoInBatches(totalTrades, batchSize, random, collection);
+            MongoCollection<Document> collectionRead = database.getCollection("trades");
+           readFromMongoWithFilter(collectionRead);
 
 
             // Access the database and collection
