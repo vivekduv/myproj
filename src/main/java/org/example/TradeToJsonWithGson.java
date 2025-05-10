@@ -297,7 +297,7 @@ public class TradeToJsonWithGson {
             }
 
             // Insert the batch into MongoDB
-         //   collection.insertMany(batch);
+         //  // collection.insertMany(batch);
             kafkaProducer.flush();
 
             System.out.println("Inserted batch " + (i + 1) + " of " + (totalTrades / batchSize));
