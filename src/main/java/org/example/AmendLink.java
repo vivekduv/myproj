@@ -47,12 +47,22 @@ public class AmendLink {
         System.out.println("Original ID for A2: " + getOriginalId("A2",map)); // Should print N1
         System.out.println("Original ID for AA1: " + getOriginalId("AA1",map)); // Should print N2
     }
-    static String getOriginalId(String currentId, Map<String,String> map){
+    static String getOriginalId2(String currentId, Map<String,String> map){
         String origId = currentId;
         while (map.containsKey(origId)) {
             origId = map.get(origId);
         }
         return origId;
     }
+    static String getOriginalId(String currentId, Map<String,String> map){
+        String origId = currentId;
+        while (true) {
+            String next = map.get(origId);
+            if (next == null) break;
+            origId = next;
+        }
+        return origId;
+    }
+
 
 }
